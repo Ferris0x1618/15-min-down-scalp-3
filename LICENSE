@@ -1,13 +1,38 @@
+# Pine Script TradingView Strategy
+
+## Confidentiality Notice
+
+This code repository contains confidential information intended solely for the review of [Ferris0x1618] (the requester) and the AI assistant providing assistance. By accessing or using this code, you acknowledge and agree to the following:
+
+1. The code and any accompanying information are confidential and proprietary.
+2. You are prohibited from disclosing, distributing, or sharing the code or any part thereof with any other individuals or entities without explicit authorization from the requester.
+3. Any unauthorized use, disclosure, or distribution of the code may result in legal action and other consequences.
+
+Please treat the code with the utmost confidentiality and take appropriate measures to ensure its security. If you have inadvertently accessed this code without proper authorization, please exit the repository immediately and notify the requester.
+
+By continuing to access or use this code, you signify your understanding and acceptance of the confidentiality obligations outlined above.
+
+## Overview
+
+a Trading View Pine code that is for a BTC trading strategy 
+
+Downtrend 15-minute time frame Short Scalp Trade:
+
+Entry only on when the 21-Day SMA is under the 55-day SMA AND BBWP < 35%
+
+Exist when PMARP <15% on a 15 min candle close OR 15 min candle closes above local range high OR current candle wicks above prior Trend High. 
+
+## Usage Instructions
+
+Pine Code Scrypt intended to be used in Trading View
+
+## Disclaimer
+
+The code is under development and I hold no accountability to anyone who uses it. it is not financial advice to use this scrypt. 
+
 MIT License
 
 Copyright (c) 2023 Ferris0x1618
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
