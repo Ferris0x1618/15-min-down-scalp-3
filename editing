@@ -1,58 +1,56 @@
-//@version=5
-strategy("Adjusted SMA Crossover with BBWP and Dynamic Range Strategy - Short Scalp", overlay=true, pyramiding=0)
+//@version=5  
+strategy("Adjusted SMA Crossover with BBWP and Dynamic Range Strategy - Short Scalp", overlay=true, pyramiding=0)  
 
-sma21_period = 21
-sma55_period = 55
-bbwp_length = 20
-bbwp_threshold = 35
-pmarLen = 20
-ma_length = 20
-price_source = close
-n = 96  // range parameter for 24 hours on a 15 min time frame
-m = 672  // trend parameter for 7 days on a 15 min time frame
+sma21_period = 21  
+sma55_period = 55  
+bbwp_length = 20  
+bbwp_threshold = 35  
+pmarLen = 20  
+ma_length = 20  
+price_source = close  
+n = 96 // range parameter for 24 hours on a 15 min time frame  
+m = 672 // trend parameter for 7 days on a 15 min time frame  
 
-sma21 = ta.sma(close, sma21_period)
-sma55 = ta.sma(close, sma55_period)
+sma21 = ta.sma(close, sma21_period)  
+sma55 = ta.sma(close, sma55_period)  
 
-[bb_upper, bb_middle, bb_lower] = ta.bb(close, bbwp_length, 2) 
-bbwp = (bb_upper - bb_lower) / bb_middle * 100
+[bb_upper, bb_middle, bb_lower] = ta.bb(close, bbwp_length, 2)   
+bbwp = (bb_upper - bb_lower) / bb_middle * 100  
 
-// PMARP indicator calculation
-ma = ta.vwma(price_source, ma_length)
-pmar = price_source / ma
-pmarHigh = ta.highest(pmar, pmarLen)
-pmarLow = ta.lowest(pmar, pmarLen)
-PmarCRatio = pmar >= 1 ? 100 / (pmarHigh - 1) : 100 / (1 - pmarLow)
-pmarSum = 0.0
-len = bar_index < pmarLen ? bar_index : pmarLen
-for i = 1 to len
-    pmarSum := pmar[i] > pmar ? 0 : pmarSum + 1
+// PMARP indicator calculation  
+ma = ta.vwma(price_source, ma_length)  
+pmar = price_source / ma  
+pmarHigh = ta.highest(pmar, pmarLen)  
+pmarLow = ta.lowest(pmar, pmarLen)  
+PmarCRatio = pmar >= 1 ? 100 / (pmarHigh - 1) : 100 / (1 - pmarLow)  
+pmarSum = ta.sum(pmar > ta.na(pmar[1], len) ? 1 : 0, len)
 pmarp = bar_index >= pmarLen ? pmarSum / len * 100 : na
+  
 
-// Define range and trend parameters
-range_high = ta.highest(high, n)
-range_low = ta.lowest(low, n)
-trend_high = ta.highest(high, m)
+// Define range and trend parameters  
+range_high = ta.highest(high, n)  
+range_low = ta.lowest(low, n)  
+trend_high = ta.highest(high, m)  
 
-// Update range_high if the market breaks above the previous range
-range_high := close[1] > range_high[1] ? close[1] : range_high
+// Update range_high if the market breaks above the previous range  
+range_high := close[1] > range_high[1] ? close[1] : range_high  
 
-shortCondition = sma21 < sma55 and bbwp < bbwp_threshold
-pmarpExitCondition = pmarp < 15
-rangeExitCondition = close > range_high 
-trendExitCondition = high > trend_high
+shortCondition = sma21 < sma55 and bbwp < bbwp_threshold  
+pmarpExitCondition = pmarp < 15  
+rangeExitCondition = close > range_high   
+trendExitCondition = high > trend_high  
 
-if (shortCondition and strategy.position_size == 0)
-    strategy.entry("Sell", strategy.short)
-    label.new(bar_index, high, "Buy", color=color.green)
+if (shortCondition and strategy.position_size == 0)  
+  strategy.entry("Sell", strategy.short)  
+  label.new(bar_index, high, "Buy", color=color.green)  
 
-if (pmarpExitCondition or rangeExitCondition or trendExitCondition)
-    strategy.close("Sell")
-    label.new(bar_index, low, "Sell", color=color.red)
+if (pmarpExitCondition or rangeExitCondition or trendExitCondition)  
+  strategy.close("Sell")  
+  label.new(bar_index, low, "Sell", color=color.red)  
 
-plot(sma21, color=color.yellow, title="21 Day SMA")
-plot(sma55, color=color.green, title="55 Day SMA")
-plot(bbwp, color=color.blue, title="BBWP")
-plot(pmarp, color=color.purple, title="PMARP")
-plot(range_high, color=color.orange, title="Range High")
+plot(sma21, color=color.yellow, title="21 Day SMA")  
+plot(sma55, color=color.green, title="55 Day SMA")  
+plot(bbwp, color=color.blue, title="BBWP")  
+plot(pmarp, color=color.purple, title="PMARP")  
+plot(range_high, color=color.orange, title="Range High")  
 plot(trend_high, color=color.red, title="Trend High")
