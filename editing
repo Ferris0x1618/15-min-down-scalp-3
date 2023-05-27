@@ -39,19 +39,19 @@ pmarpExitCondition = pmarp < 15
 rangeExitCondition = close > range_high   
 trendExitCondition = high > trend_high   
 
-var string lastAction = "sell" 
+var string lastAction = "sell"
 
-if (shortCondition and strategy.position_size == 0)   
-  strategy.entry("Sell", strategy.short)   
+if (shortCondition and strategy.position_size == 0)
+  strategy.entry("Sell", strategy.short)
   if (lastAction == "sell")
-    label.new(bar_index, high, "Buy", color=color.green) 
-  lastAction := "buy" 
+    label.new(bar_index, high, "Buy", color=color.green)
+    lastAction := "buy"
 
-if (pmarpExitCondition or rangeExitCondition or trendExitCondition)   
-  strategy.close("Sell")   
+if (pmarpExitCondition or rangeExitCondition or trendExitCondition)
+  strategy.close("Sell")
   if (lastAction == "buy")
-    label.new(bar_index, low, "Sell", color=color.red) 
-  lastAction := "sell" 
+    label.new(bar_index, low, "Sell", color=color.red)
+    lastAction := "sell"
 
 plot(sma21, color=color.yellow, title="21 Day SMA")   
 plot(sma55, color=color.green, title="55 Day SMA")   
