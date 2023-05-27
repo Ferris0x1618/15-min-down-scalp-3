@@ -53,6 +53,7 @@ if (pmarpExitCondition or rangeExitCondition or trendExitCondition)
     label.new(bar_index, low, "Sell", color=color.red)
     lastAction := "sell"
 
+
 plot(sma21, color=color.yellow, title="21 Day SMA")   
 plot(sma55, color=color.green, title="55 Day SMA")   
 plot(bbwp, color=color.blue, title="BBWP")   
